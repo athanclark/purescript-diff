@@ -6,6 +6,7 @@
     "bower_components",
     "output"
   ],
+  "license": "BSD-3-Clause",
   "dependencies": {
     "purescript-prelude": "^3.1.1",
     "purescript-maybe": "^3.1.0",
@@ -13,6 +14,10 @@
     "purescript-these": "^3.0.0",
     "purescript-arrays": "^4.4.0",
     "purescript-sets": "^3.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/athanclark/purescript-diff.git"
   },
   "devDependencies": {
     "purescript-psci-support": "^3.0.0"
