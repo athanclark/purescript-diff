@@ -13,15 +13,25 @@ import Data.StrMap (StrMap)
 import Data.StrMap as StrMap
 import Data.Set (Set)
 import Data.Set as Set
+import Data.String.Yarn as String
 import Data.Array as Array
 import Data.Foldable (foldr)
 
 
 
-eqToDiffC :: forall a. Eq a => a -> a -> Maybe (These Unit Unit)
+eqToDiffC :: forall a. Eq a => a -> a -> Maybe (These a a)
 eqToDiffC a b
   | a == b = Nothing
-  | otherwise = Just (Both unit unit)
+  | otherwise = Just (Both a b)
+
+
+diffCString :: String -> String -> Maybe (These String String)
+diffCString a b = case diffC (Prefix (String.toChars a) :: Prefix Array Char) (Prefix (String.toChars b)) of
+  Nothing -> Nothing
+  Just d -> Just $ case d of
+    This (Prefix as) -> This (String.fromChars as)
+    That (Prefix bs) -> That (String.fromChars bs)
+    Both (Prefix as) (Prefix bs) -> Both (String.fromChars as) (String.fromChars bs)
 
 
 -- | `aux` represents "has more than the other of..."
