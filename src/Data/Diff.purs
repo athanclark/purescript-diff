@@ -17,8 +17,14 @@ import Data.Array as Array
 import Data.Foldable (foldr)
 
 
--- | `aux` represents "has more than the other of..." - preorder of content?
--- Truthiness, Falseness? Additive a 'la magnitue?
+
+eqToDiffC :: forall a. Eq a => a -> a -> Maybe (These Unit Unit)
+eqToDiffC a b
+  | a == b = Nothing
+  | otherwise = Just (Both unit unit)
+
+
+-- | `aux` represents "has more than the other of..."
 class Diff a aux | a -> aux where
   diff :: a -> a -> Maybe (Either aux aux)
 
@@ -88,6 +94,14 @@ instance diffNegativeChar :: Diff (Negative Char) Char where
   diff (Negative a) (Negative b)
     | a == b = Nothing
     | otherwise = if a < b then Just (Left a) else Just (Right b)
+
+
+diffToDiffC :: forall a aux. Diff a aux => a -> a -> Maybe (These aux aux)
+diffToDiffC a b = case diff a b of
+  Nothing -> Nothing
+  Just eX -> case eX of
+    Left x -> Just (This x)
+    Right y -> Just (That y)
 
 
 -- | Diffable collections
